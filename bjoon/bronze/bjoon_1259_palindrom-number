@@ -1,0 +1,14 @@
+import sys
+input=sys.stdin.readline
+while True:
+    a=list(map(str, input().strip()))
+    i=0
+    if a==['0']:
+        break
+    elif len(a)==1:
+        print("yes")
+    elif 2<=len(a)<=5:
+        if a[i]==a[-1-i] and a[i+1]==a[-2-i]:
+            print("yes")
+        else:
+            print("no")
