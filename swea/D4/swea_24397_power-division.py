@@ -1,11 +1,11 @@
-#N=int(input())
-X,Y,Z=map(int, input().split())
+N = int(input())
 
-#if Z==9:
+for _ in range(N):
+    X,Y,Z = map(int, input().split())
+    val = str(pow(X,Y)/Z)
+    int_num,dec_num = map(str, val.split('.'))
+    if len(dec_num)>=3:
+        print(str(int_num)[-3:] + '.' + (str(dec_num)[:3]))
+    elif len(dec_num)<3:
+        print(str(int_num)[-3:] + '.' + (str(dec_num).zfill(3)))
     
-    
-a=list(str(X**Y//Z))
-b=list(str(X**Y%Z))
-
-print(a)
-print(b)
