@@ -1,27 +1,20 @@
 T = int(input())
 
 
-def is_possible():
-    if M > arrive[0]:
-        return False
-    elif arrive[-1] < M*K:
-        return False
-    else:
-        return True
+for test_case in range(T):
+    N, M, K = map(int, input().split())
+    client = list(map(int, input().split()))
+    client.sort()
 
-
-
-for i in range(T):
-    result = 0
-    N, M, K = map(int, input().split()) # 사람수, M초의 시간, K개의 붕어빵
-    arrive = list(map(int, input().split()))
-    arrive.sort()
-
-    if is_possible() == True:
-        result = 'Possible'
-    else:
-        result = 'Impossible'
+    result = "Possible"
     
     
-    print(f'#{i+1} {result}')
-    
+    # i는 몇 번째 손님인지를 파악하기 위함
+    # t는 손님이 도착한 시간
+    for i, t in enumerate(client): 
+        bread = (t // M) * K # 이번 알고리즘의 핵심 key
+        if bread < i + 1: # 빵의 갯수가 더 작을 때를 의미
+            result = "Impossible"
+            break
+
+    print(f"#{test_case + 1} {result}")
