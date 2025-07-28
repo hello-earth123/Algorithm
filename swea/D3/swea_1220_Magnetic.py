@@ -1,20 +1,32 @@
 # 1은 N극 / 2는 S극 / 0은 빈 공간
 # N = 100 (책상이 100 x 100)
+# import sys
+# input = sys.stdin.readline
+
 T = 10
 
-for test_case in range(1, T+1):
+for test_case in range(1):
     N = int(input()) #값이 항상 100으로 고정
+
     table = []
     result = 0
 
-    table_row = list(map(int, input().split()))
-    
-    table.append(table_row)
-    table_real = list(zip(*table))
-    
-print(table_real)
+    for _ in range(N):
+        table_row = list(map(int, input().split()))
+        table.append(table_row)
 
-    #print(f'#{test_case} {result}')
+    #table transpose -> 1은 (N) 오른쪽으로 가고, 2는 (S) 왼쪽으로 간다.
+    table_real = list(zip(*table))
+
+
+    for table_line in table_real:
+        for table_one in table_line:
+            if table_one == 0:
+                continue
+            if table_one
+
+
+    # print(f'#{test_case} {result}')
   
 
 
