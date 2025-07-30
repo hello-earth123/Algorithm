@@ -1,15 +1,11 @@
-N = int(input())
+T = int(input())
 
+for test_case in range(1,T + 1):
+    numbers = list(map(int, input().split()))
 
-for j in range(N):
-    result=0
-    t=list(map(int, input().split()))
-    
-    for i in range(10):
-        if t[i]%2!=0:
-	        result+=t[i]
-         
-    print(f"#{j+1} {result}")
+    result = 0
+    for number in numbers:
+        if number % 2 != 0:
+            result += number
 
-
-
+    print(f'#{test_case} {result}')
