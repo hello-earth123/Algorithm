@@ -1,34 +1,37 @@
-# 1은 N극 / 2는 S극 / 0은 빈 공간
-# N = 100 (책상이 100 x 100)
-# import sys
-# input = sys.stdin.readline
-
+from pprint import pprint
 T = 10
 
-for test_case in range(1):
-    N = int(input()) #값이 항상 100으로 고정
+for test_case in range(1, T+1):
 
-    table = []
+
     result = 0
+    N = int(input())
 
+
+    # table 생성    
+    table = []
     for _ in range(N):
-        table_row = list(map(int, input().split()))
-        table.append(table_row)
-
-    #table transpose -> 1은 (N) 오른쪽으로 가고, 2는 (S) 왼쪽으로 간다.
-    table_real = list(zip(*table))
+        row = list(map(int, input().split()))
+        table.append(row)
 
 
-    for table_line in table_real:
-        for table_one in table_line:
-            if table_one == 0:
-                continue
-            if table_one
+    # N극은 1, S극은 2, 빈 곳은 0 / 위쪽이 N극, 아래쪽이 S극 / 1은 아래로, 2는 위로 간다.
+    # 만약 1과 2가 만나면 교착 / 112 는 한 번, 1212는 두 번, 
+    # 1, 2가 만나면 -> (교착 + 1)
+
+    for i in range(100):
+        flag = 0 #checkpoint
+        for j in range(100):
+            
+            if table[j][i] == 1:
+                flag = 1 # N극 발견
+
+            if table[j][i] == 2 and flag == 1:
+                result += 1
+                flag = 0 # 한 번 교착이 되면 초기화를 시켜야 1122와 같은 상황도 +1로 인식
 
 
-    # print(f'#{test_case} {result}')
-  
-
+    print(f'#{test_case} {result}')
 
 
 

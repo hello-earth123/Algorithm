@@ -1,29 +1,41 @@
 def is_increasing(n):
-    last_digit = 10  # 어떤 숫자보다 큼 (0~9보다 큰 숫자) -> 1의 자리는 맨 처음 자릿수 이므로 무조건 통과시키기 위해
+    last_digit = float('inf')  # 어떤 숫자보다 큼 (0~9보다 큰 숫자) -> 1의 자리는 맨 처음 자릿수 이므로 무조건 통과시키기 위해
     while n > 0:
         current = n % 10
+
         if current > last_digit:
             return False
-        last_digit = current
-        n =  n // 10
+        
+        last_digit = current # 앞으로 땡기기
+
+        n =  n // 10 #자릿수 하나 앞으로
     return True
 
 T = int(input())
 
 for test_case in range(1, T + 1):
+
     N = int(input())
-    X = list(map(int, input().split()))
+
+    numbers = list(map(int, input().split()))
+
     max_danjo = -1
+
 
     for i in range(N - 1):
         for j in range(i + 1, N):
-            product = X[i] * X[j]
-            if is_increasing(product):
-                if product > max_danjo:
-                    max_danjo = product
+            mul_number = numbers[i] * numbers[j]
+
+            if is_increasing(mul_number):
+                if mul_number > max_danjo:
+                    max_danjo = mul_number
+
 
     print(f'#{test_case} {max_danjo}')
 
+
+    # 자릿수 비교를 위해서 먼저 10으로 나눈다. -> 그럼 몫과 나머지가 나오는데 몫이 다음 타겟, 나머지는 현재값
+    # 현재값이 과거 값이 되고, 몫이 다시 10으로 나눌 숫자가 된다.
 
 
 # T = int(input())

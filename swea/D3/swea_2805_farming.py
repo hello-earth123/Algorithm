@@ -21,3 +21,35 @@ for test_case in range(T):
     
     print(f'#{test_case} {result}')
 
+
+
+
+# T = int(input())
+
+# for test_case in range(1, T+1):
+#     N = int(input())
+
+#     #최종값
+#     result = 0
+
+#     #농장 생성
+#     farm = []
+#     for _ in range(N):
+#         row = list(map(int, input()))
+#         farm.append(row)
+
+
+#     # farm[N//2][N//2](정가운데)을 기준으로 떨어진 거리만큼 리스트를 양 옆에서 줄인다
+#     # 마름모 윗부분
+#     for i in range(N//2, -1, -1):
+#         for j in range((N//2)-i, (N//2)+i+1):
+#             result += farm[i][j]
+ 
+
+#     # 마름모 아랫부분
+#     for p in range((N//2)+1, N):
+#         for q in range(p-(N//2), N-(p-(N//2))):
+#             result += farm[p][q]
+
+
+#     print(f'#{test_case} {result}')
