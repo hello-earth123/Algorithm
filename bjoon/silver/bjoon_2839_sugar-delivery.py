@@ -1,15 +1,80 @@
+# 정확히 N킬로그램 배달해야됨
+# 5kg 아니면 3kg밖에 없음
+# '최대한 적은 봉지' -> 그리디
+# 정확하게 N킬로그램이 아니면 -1을 출력
+sugar_bag = 0
+
 N = int(input())
-
-delivery_num = -1
-
-# 5kg 봉투를 최대한 많이 쓰고, 남은 수를 3으로 나누는 방식
-for count_5 in range(N // 5, -1, -1):  # 5kg 봉투 개수를 최대부터 0까지 감소시키면서
-    
-    remainder = N - (count_5 * 5)
-    
-    if remainder % 3 == 0:
-        count_3 = remainder // 3
-        delivery_num = count_5 + count_3
+while True:
+    # 종료 조건
+    if N == 0:
         break
 
-print(delivery_num)
+    # 종료 조건
+    if N % 5 == 0:
+        sugar_bag += N // 5
+        break
+    
+    # 반복 조건
+    else:
+        N = N - 3
+        sugar_bag += 1
+
+    # 종료 조건
+    if N < 0:
+        sugar_bag = -1
+        break
+
+print(sugar_bag)
+
+
+# 3킬로그램이 1 -> 3 -> 0 -> 2 -> 4 순서로 순회
+# 1 X
+# 2 X
+# 3 -> 1
+# 4 -> X
+# 5 -> 전부 5킬로그램
+# 6 -> 2
+# 7 -> X
+# 8 -> 5 하나 3 -> 1
+# 9 -> 5 X   9 -> 3
+# # 10 나머지0 -> 전부 5킬로그램
+# 11 나머지1 -> 5 하나 6 -> 2
+# 12 나머지2 -> 5 X 12 -> 4
+# 13 나머지3 -> 5 둘 3 -> 1
+# 14 나머지4 -> 5 하나 9 -> 3
+# # 15 나머지0 -> 전부 5킬로그램 -> 0
+# 16 나머지1 -> 5 둘 6
+# 17 나머지2 -> 5 하나 12
+# 18 나머지3 -> 5 셋 3
+# 19 나머지4 -> 5 둘 9
+# # 20 나머지0 -> 전부 5킬로그램
+# 21 나머지1 -> 5 셋 6
+# 22 나머지2 -> 5 둘 12
+# 23 나머지3 -> 5 넷 3
+# 24 나머지4 -> 5 셋 9
+# 25 나머지0 -> 5 다섯
+# 26
+# 27
+# 28
+# 29
+# 30
+
+
+
+
+# N = int(input())
+
+# delivery_num = -1
+
+# # 5kg 봉투를 최대한 많이 쓰고, 남은 수를 3으로 나누는 방식
+# for count_5 in range(N // 5, -1, -1):  # 5kg 봉투 개수를 최대부터 0까지 감소시키면서
+    
+#     remainder = N - (count_5 * 5)
+    
+#     if remainder % 3 == 0:
+#         count_3 = remainder // 3
+#         delivery_num = count_5 + count_3
+#         break
+
+# print(delivery_num)

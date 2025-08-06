@@ -16,11 +16,7 @@ for i in range(T):
     else:
         Y=N%H
         X=(N//H)+1
-
-
-
-
-
+        
 
     print(str(Y)+str(X).zfill(2))
 
