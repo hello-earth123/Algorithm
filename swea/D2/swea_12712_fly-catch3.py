@@ -65,5 +65,3 @@ for test_case in range(1, T+1):
                  
     # + 모양 최대값과 x 모양 최대값 중 더 큰 것으로 선택   
     print(f'#{test_case} {max(result_plus, result_cross)}')
-    
-    

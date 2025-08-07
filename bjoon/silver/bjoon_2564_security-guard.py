@@ -61,6 +61,7 @@ for loc in coordinates:
         s -= loc[x+1]
             
     store_loc.append(s)
+    
 
 # '최단'(min) '거리'(abs) 계산
 total = 0
