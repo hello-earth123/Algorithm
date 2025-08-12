@@ -9,6 +9,7 @@ for _ in range(N):
     # times[0]은 시작시간, times[1]은 끝나는 시간
     start, end = map(int, input().split())
     timeline.append((start, end))
+
 '''
 # lambda 매개변수 : 표현식(보통 return 값)
 # 여기서 이 x는 앞에 있는 timeline 리스트를 말하는 것
@@ -23,6 +24,7 @@ for _ in range(N):
 # 일찍 끝나는 시간이 똑같으면 시작 시간이 더 빠른 회의를 고름으로써
 # 더 유리한 선택을 한다.
 '''
+
 timeline.sort(key = lambda x : (x[1], x[0]))
 # print(timeline)
 
