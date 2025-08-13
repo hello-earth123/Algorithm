@@ -47,10 +47,11 @@ print()
 # bfs
 visited_bfs = [False] * (N+1)
 queue = deque([V])
-visited_bfs[V] = True
+
 
 while queue:
     visited = queue.popleft()
+    visited_bfs[visited] = True
     print(visited, end = ' ')
     
     for next_visit in graph[visited]:
@@ -107,15 +108,15 @@ BFS: 너비 우선 → 현재 레벨(거리)에서 가능한 모든 노드부터
 #             if not visit_dfs[next_visit]:
 #                 # 또 스택에 append
 #                 stack.append(next_visit)   
-# '''      
-# DFS는 스택을 써서 "나중에" 방문할 노드를 쌓아둔다.
+'''      
+DFS는 스택을 써서 "나중에" 방문할 노드를 쌓아둔다.
 
-# 어떤 노드를 스택에 넣어도, 실제로 그 노드에 방문했다고 확정 짓는 건
-# "스택에서 꺼낸 순간"이다.
-# → 왜냐면 스택에 같은 노드가 여러 번 들어갈 수도 있기 때문.
+어떤 노드를 스택에 넣어도, 실제로 그 노드에 방문했다고 확정 짓는 건
+"스택에서 꺼낸 순간"이다.
+→ 왜냐면 스택에 같은 노드가 여러 번 들어갈 수도 있기 때문.
 
-# 방문 확정 = pop 후
-# '''        
+방문 확정 = pop 후
+'''        
 
 
 
@@ -134,13 +135,13 @@ BFS: 너비 우선 → 현재 레벨(거리)에서 가능한 모든 노드부터
 #         if not visited_bfs[next_v]:
 #             visited_bfs[next_v] = True
 #             queue.append(next_v)     
-# '''
-# BFS는 큐를 써서 "먼저 들어온 순서대로" 처리한다.
+'''
+BFS는 큐를 써서 "먼저 들어온 순서대로" 처리한다.
 
-# 큐 특성상 같은 노드가 여러 번 들어가면 불필요한 중복 탐색이 생긴다.
+큐 특성상 같은 노드가 여러 번 들어가면 불필요한 중복 탐색이 생긴다.
 
-# 그래서 큐에 넣을 때 바로 visited를 True로 바꿔서,
-# 중복 enqueue를 미리 방지한다.
+그래서 큐에 넣을 때 바로 visited를 True로 바꿔서,
+중복 enqueue를 미리 방지한다.
 
-# 방문 확정 = enqueue 순간
-# '''
+방문 확정 = enqueue 순간
+'''

@@ -1,38 +1,30 @@
-T = 10
+# 난쟁이들
+dwarfs = []
+for _ in range(9):
+    dwarf = int(input())
+    dwarfs.append(dwarf)
 
-for test_case in range(1, T+1):
-    # 100으로 고정
-    N = int(input())
+# 9명의 총합
+total = sum(dwarfs)
 
+# 총 합에서 두 명씩 뽑아서 뺀다 -> 100을 만족할 때 까지
+found = False
+for i in range(len(dwarfs)-1):
+    for j in range(i+1, len(dwarfs)):
+        result = total - dwarfs[i] - dwarfs[j]
+
+        if result == 100:
+            # pop을 하면서 인덱스 번호가 바뀐다 / pop을 할 때는 인덱스 번호에 항상 주의한다.
+            # 큰 인덱스부터 빼면 안전하다.
+            dwarfs.pop(j) 
+            dwarfs.pop(i)
+            found = True
+            break
+    if found:
+        break
     
-    # 테이블 생성
-    table = []
-    for _ in range(N):
-        row = list(map(int, input().split()))
-        table.append(row)
-        
-    
-    # N극은 1, S극은 2
-    # 세로 우선 순회
-    count = 0
-    for c in range(N):
-        # 스택 생성
-        # 세로 열 모두 순회하였을 때 stack 초기화 -> 열 끼리는 연관 없기 때문
-        stack = []
-        for r in range(N):
-            # 순회 중에 1을 만나면 스택에 push
-            if table[r][c] == 1:
-                stack.append(table[r][c])
-            elif table[r][c] == 0:
-                # 빈 공간 나오면 스택 초기화
-                stack.clear()
-            
-            # 2를 만났을 때
-            elif table[r][c] == 2:
-                # 스택에 1 있으면 
-                if len(stack) != 0:
-                    stack.pop()
-                    count += 1
-    
-    # 출력                
-    print(f'#{test_case} {count}')
+
+dwarfs.sort()
+
+for i in range(len(dwarfs)):
+    print(dwarfs[i])
