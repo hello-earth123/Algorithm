@@ -1,31 +1,48 @@
+N, K = map(int, input().split())
 
-# S=0 Y=1 -> 1학년 여자
-# S=0 Y=2 -> 2학년 여자
-# S=0 Y=3 -> 3학년 여자
-# S=0 Y=4 -> 4학년 여자
-# S=0 Y=5 -> 5학년 여자
-# S=0 Y=6 -> 6학년 여자
-# S=1 Y=1 -> 1학년 남자
-# .
-# .
-# .
-# S=1 Y=6 -> 6학년 남자
-room=0
-count=0
-N,K=map(int, input().split()) #학생 수
+# 학생 
+boys = []
+girls = []
+boys_counts = [0] * 7
+girls_counts = [0] * 7
+for _ in range(N):
+    info = list(map(int, input().split()))
+    if info[0] == 0:
+        girls.append(info)
+        
+    else:
+        boys.append(info)    
 
-students=[]
-for i in range(N):
-    S,Y=list(map(int, input().split()))
-    students.append((S,Y))
-    for j in range(N):
-        if students[i]==students[j]:
-            count+=1
-print(students[1])
-#K를 넘어가면 몫+1
-#K보다 작거나 같다면 1
+# print(boys)
+# print(girls)
 
-if (count)>K:
-    room=(count//K)+1
-elif (count)<=K:
-    room+=1
+# 남학생 카운팅
+for i in range(len(boys)):
+    boys_counts[boys[i][1]] += 1
+    
+# 여학생 카운팅
+for i in range(len(girls)):
+    girls_counts[girls[i][1]] += 1
+    
+room = 0
+for idx in range(1, len(boys_counts)):
+    if boys_counts[idx] <= K and boys_counts[idx] != 0:
+        room += 1
+    
+    else:
+        if boys_counts[idx] % K == 0:
+            room += (boys_counts[idx] // K)
+        else:
+            room += (boys_counts[idx] // K) + 1
+        
+for idx in range(1, len(girls_counts)):
+    if girls_counts[idx] <= K and girls_counts[idx] != 0:
+        room += 1
+    
+    else:
+        if girls_counts[idx] % K == 0:
+            room += (girls_counts[idx] // K)
+        else:
+            room += (girls_counts[idx] // K) + 1
+
+print(room)
