@@ -1,97 +1,195 @@
+#!/usr/bin/env python3
 import sys
 import math
+from typing import List, Tuple, Optional
 
-TABLE_WIDTH = 254
-TABLE_HEIGHT = 127
-BALL_RADIUS = 5.73 / 2
-
-# 홀의 좌표
+# -----------------------
+# 환경 상수
+# -----------------------
+TABLE_WIDTH = 254.0
+TABLE_HEIGHT = 127.0
+BALL_RADIUS = 5.73 / 2.0
 POCKETS = [
-    (0, 0),
-    (TABLE_WIDTH, 0),
-    (0, TABLE_HEIGHT),
-    (TABLE_WIDTH, TABLE_HEIGHT),
-    (TABLE_WIDTH // 2, 0),
-    (TABLE_WIDTH // 2, TABLE_HEIGHT)
+    (0.0, 0.0),
+    (TABLE_WIDTH / 2.0, 0.0),
+    (TABLE_WIDTH, 0.0),
+    (0.0, TABLE_HEIGHT),
+    (TABLE_WIDTH / 2.0, TABLE_HEIGHT),
+    (TABLE_WIDTH, TABLE_HEIGHT)
 ]
+EPS = 1e-9
 
-# 각도와 세기를 구한다.
-def get_angle_and_power(white, target, pocket):
-    dx = pocket[0] - target[0]
-    dy = pocket[1] - target[1]
-    dist = math.hypot(dx, dy)
-    if dist == 0:
-        return 90, 30
-    
-    # 타격 지점 계산 (목적구의 반대 방향으로 반지름*2만큼 이동)
-    tx = target[0] - dx / dist * BALL_RADIUS * 2
-    ty = target[1] - dy / dist * BALL_RADIUS * 2
+# -----------------------
+# 기하 유틸리티
+# -----------------------
+def dist(a: Tuple[float,float], b: Tuple[float,float]) -> float:
+    return math.hypot(a[0]-b[0], a[1]-b[1])
 
-    wx = tx - white[0]
-    wy = ty - white[1]
+def line_point_min_dist(a: Tuple[float,float], b: Tuple[float,float], p: Tuple[float,float]) -> float:
+    x1,y1 = a; x2,y2 = b; px,py = p
+    dx = x2 - x1; dy = y2 - y1
+    if abs(dx) < EPS and abs(dy) < EPS:
+        return dist(a, p)
+    t = ((px - x1) * dx + (py - y1) * dy) / (dx*dx + dy*dy)
+    t = max(0.0, min(1.0, t))
+    projx = x1 + t * dx
+    projy = y1 + t * dy
+    return math.hypot(px - projx, py - projy)
 
-    angle = math.degrees(math.atan2(wx, wy)) % 360
-    power = min(100, math.hypot(wx, wy) / 2)
+def contact_within_table(contact: Tuple[float,float]) -> bool:
+    x,y = contact
+    return BALL_RADIUS - 1e-6 <= x <= TABLE_WIDTH - BALL_RADIUS + 1e-6 and \
+           BALL_RADIUS - 1e-6 <= y <= TABLE_HEIGHT - BALL_RADIUS + 1e-6
+
+# -----------------------
+# 타격점 계산
+# -----------------------
+def get_contact_point_on_target_for_pocket(target: Tuple[float,float], pocket: Tuple[float,float]) -> Tuple[float,float]:
+    bx,by = target
+    px,py = pocket
+    dx = px - bx; dy = py - by
+    d = math.hypot(dx, dy)
+    if d < EPS:
+        return (bx, by)
+    cx = bx - (dx / d) * (2.0 * BALL_RADIUS)
+    cy = by - (dy / d) * (2.0 * BALL_RADIUS)
+    return (cx, cy)
+
+def compute_angle_and_power_from_white_to_contact(white: Tuple[float,float], contact: Tuple[float,float]) -> Tuple[float,float]:
+    wx = contact[0] - white[0]
+    wy = contact[1] - white[1]
+    angle = math.degrees(math.atan2(wx, wy)) % 360.0
+    distance = math.hypot(wx, wy)
+    power = min(100.0, distance / 2.0)
     return angle, power
 
-def mirror_point(point, wall):
-    """벽 대칭 좌표 (원쿠션)"""
-    x, y = point
-    if wall == "left":
-        return (-x, y)
-    elif wall == "right":
-        return (2*TABLE_WIDTH - x, y)
-    elif wall == "top":
-        return (x, -y)
-    elif wall == "bottom":
-        return (x, 2*TABLE_HEIGHT - y)
+# -----------------------
+# 경로 차단 검사
+# -----------------------
+def is_path_blocked(a: Tuple[float,float], b: Tuple[float,float], balls: List[Tuple[float,float]], ignore_index: Optional[int]) -> bool:
+    for i, ball in enumerate(balls):
+        if ignore_index is not None and i == ignore_index:
+            continue
+        bx,by = ball
+        if bx < -0.5 and by < -0.5:
+            continue
+        if line_point_min_dist(a, b, ball) < 2.0 * BALL_RADIUS - 1e-6:
+            return True
+    return False
+
+# -----------------------
+# 벽 반사(원쿠션)
+# -----------------------
+def mirror_point(point: Tuple[float,float], wall: str) -> Tuple[float,float]:
+    x,y = point
+    if wall == "left": return (-x, y)
+    if wall == "right": return (2.0*TABLE_WIDTH - x, y)
+    if wall == "top": return (x, -y)
+    if wall == "bottom": return (x, 2.0*TABLE_HEIGHT - y)
     return point
 
-def choose_shot(white, balls, stage):
-    # 검은공은 반드시 마지막에
-    targets = []
-    for i, ball in enumerate(balls, start=1):
-        if ball[0] < 0:
-            continue
-        if i == 8:
-            continue
-        targets.append((i, ball))
-    if not targets:
-        # 남은 게 검은공뿐이면 검은공을 타겟
-        for i, ball in enumerate(balls, start=1):
-            if i == 8 and ball[0] >= 0:
-                targets.append((i, ball))
+# -----------------------
+# 샷 선택 (1~6단계 모두 처리)
+# -----------------------
+def choose_shot(white: Tuple[float,float], balls: List[Tuple[float,float]], stage: int, player: str) -> Tuple[float,float,int]:
+    allowed = []
 
-    # 가장 가까운 공 우선
-    targets.sort(key=lambda b: math.hypot(b[1][0]-white[0], b[1][1]-white[1]))
+    # 6단계: 선공/후공 규칙, 8번 공 마지막
+    if stage == 6:
+        if player.lower().startswith("first"):
+            for idx in [1,3]:
+                if balls[idx][0] >= -0.5: allowed.append(idx)
+            if balls[5][0] >= -0.5: allowed.append(5)
+        else:
+            for idx in [2,4]:
+                if balls[idx][0] >= -0.5: allowed.append(idx)
+            if balls[5][0] >= -0.5: allowed.append(5)
+    else:
+        # 1~5단계: 남은 목적구 모두 허용, 8번 공은 마지막
+        for idx in [1,2,3,4]:
+            if balls[idx][0] >= -0.5: allowed.append(idx)
+        if stage >= 5 and balls[5][0] >= -0.5:
+            allowed.append(5)
 
-    for idx, ball in targets:
+    allowed.sort(key=lambda i: dist(white, balls[i]))
+
+    # 직선샷 먼저 시도
+    for idx in allowed:
+        target = balls[idx]
         for pocket in POCKETS:
-            angle, power = get_angle_and_power(white, ball, pocket)
-            if 0 <= angle <= 360:
-                return angle, power
-        
-        # 직선샷 불가 → 원쿠션 시도
-        for wall in ["left", "right", "top", "bottom"]:
-            mirrored = mirror_point(ball, wall)
+            contact = get_contact_point_on_target_for_pocket(target, pocket)
+            if not contact_within_table(contact):
+                continue
+            if is_path_blocked(white, contact, balls, ignore_index=idx):
+                continue
+            if is_path_blocked(target, pocket, balls, ignore_index=idx):
+                continue
+            angle, power = compute_angle_and_power_from_white_to_contact(white, contact)
+            return angle, power, idx
+
+        # 직선 실패 → 원쿠션
+        for wall in ["left","right","top","bottom"]:
+            mirrored = mirror_point(target, wall)
             for pocket in POCKETS:
-                angle, power = get_angle_and_power(white, mirrored, pocket)
-                return angle, power
+                contact_mir = get_contact_point_on_target_for_pocket(mirrored, pocket)
+                angle, power = compute_angle_and_power_from_white_to_contact(white, contact_mir)
+                return angle, power, idx
 
-    return 90, 30  # fallback
+    # fallback
+    return 90.0, 30.0, -1
 
-def main():
+# -----------------------
+# I/O
+# -----------------------
+def try_parse_coord_line(line: str) -> Optional[Tuple[float,float]]:
+    if not line: return None
+    parts = line.strip().split()
+    if len(parts) < 2: return None
+    try: return (float(parts[0]), float(parts[1]))
+    except: return None
+
+def read_initial_state_expected6() -> Tuple[int, str, List[Tuple[float,float]]]:
     stage = int(sys.stdin.readline())
+    line2 = sys.stdin.readline()
+    coord = try_parse_coord_line(line2)
     balls = []
-    for _ in range(6+1):  # 흰공 + 6개
-        x, y = map(int, sys.stdin.readline().split())
-        balls.append((x, y))
+    player = "first"
+    if coord is None:
+        player = line2.strip()
+        for _ in range(6):
+            c = try_parse_coord_line(sys.stdin.readline())
+            balls.append(c)
+    else:
+        balls.append(coord)
+        for _ in range(5):
+            c = try_parse_coord_line(sys.stdin.readline())
+            balls.append(c)
+    return stage, player, balls
 
-    white = balls[0]
-    targets = balls[1:]  # 1~6번 공
+def read_updated_state_expect6() -> Optional[List[Tuple[float,float]]]:
+    balls = []
+    for _ in range(6):
+        l = sys.stdin.readline()
+        if not l: return None
+        c = try_parse_coord_line(l)
+        if c is None: return None
+        balls.append(c)
+    return balls
 
-    angle, power = choose_shot(white, targets, stage)
-    print(f"{angle:.6f}/{power:.6f}/")
+# -----------------------
+# main
+# -----------------------
+def main():
+    stage, player, balls = read_initial_state_expected6()
+    while True:
+        white = balls[0]
+        angle, power, tgt_idx = choose_shot(white, balls, stage, player)
+        sys.stdout.write(f"{angle:.6f}/{power:.6f}/\n")
+        sys.stdout.flush()
+        updated = read_updated_state_expect6()
+        if updated is None:
+            return
+        balls = updated
 
 if __name__ == "__main__":
     main()

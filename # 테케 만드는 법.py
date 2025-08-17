@@ -15,5 +15,4 @@ for _ in range(T):
     for i in range(N):
         scores.append(random.randint(1, 100))
     scores = [str(s) for s in scores]
-    lines.append(f'{' '.join(scores)}')
-    
+    lines.append(f'{" ".join(scores)}')
