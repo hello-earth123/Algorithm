@@ -1,30 +1,19 @@
-# 난쟁이들
-dwarfs = []
-for _ in range(9):
-    dwarf = int(input())
-    dwarfs.append(dwarf)
+# M초의 시간동안 K개의 붕어빵을 만든다.
+# N명의 사람이 있다.
+# 시간은 t초씩 흐른다.
 
-# 9명의 총합
-total = sum(dwarfs)
+T = int(input())
+for test_case in range(1, T+1):
+    # 입력 받고 사람 오는 순서 정렬
+    N, M, K = map(int, input().split())
+    person_arrival_time = list(map(int, input().split())) # 리스트 길이는 N이다.
+    person_arrival_time.sort()
 
-# 총 합에서 두 명씩 뽑아서 뺀다 -> 100을 만족할 때 까지
-found = False
-for i in range(len(dwarfs)-1):
-    for j in range(i+1, len(dwarfs)):
-        result = total - dwarfs[i] - dwarfs[j]
-
-        if result == 100:
-            # pop을 하면서 인덱스 번호가 바뀐다 / pop을 할 때는 인덱스 번호에 항상 주의한다.
-            # 큰 인덱스부터 빼면 안전하다.
-            dwarfs.pop(j) 
-            dwarfs.pop(i)
-            found = True
-            break
-    if found:
-        break
-    
-
-dwarfs.sort()
-
-for i in range(len(dwarfs)):
-    print(dwarfs[i])
+   
+    # (K // M)은 초당 만드는 붕어빵의 갯수
+    # 사람이 도착한 시간대에 붕어빵이 있어야 팔 수가 있다.
+    # 사람이 도착한 딱 그 시간에 붕어빵의 유무가 제일 중요
+    for t in person_arrival_time:
+        fish_cake = (K // t) * M        
+        
+        

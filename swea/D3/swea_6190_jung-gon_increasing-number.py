@@ -33,9 +33,57 @@ for test_case in range(1, T + 1):
 
     print(f'#{test_case} {max_danjo}')
 
+# 자릿수 비교를 위해서 먼저 10으로 나눈다. -> 그럼 몫과 나머지가 나오는데 몫이 다음 타겟, 나머지는 현재값
+# 현재값이 과거 값이 되고, 몫이 다시 10으로 나눌 숫자가 된다.
 
-    # 자릿수 비교를 위해서 먼저 10으로 나눈다. -> 그럼 몫과 나머지가 나오는데 몫이 다음 타겟, 나머지는 현재값
-    # 현재값이 과거 값이 되고, 몫이 다시 10으로 나눌 숫자가 된다.
+
+
+
+# 완전탐색으로 다 비교하면서 단조 숫자 찾고, 끝까지 danjo 하나도 없으면 -1 출력
+T = int(input())
+for test_case in range(1, T+1):
+    N = int(input())
+    numbers = list(map(int, input().split()))
+    
+    # print(numbers)
+
+    # danjo 리스트에 모든 수를 넣고, 단조인지 판별 후에 단조 증가하는 수라면, 최대값 갱신
+    
+    # danjo = []
+    count = 0
+    result = float('-inf')
+    for i in range(N-1):
+        for j in range(i+1, N):
+            # danjo.append(str(numbers[i] * numbers[j]))
+            candidate = numbers[i] * numbers[j]
+            is_danjo = True
+
+            if len(str(candidate)) == 1:
+                if candidate > result:
+                    result = candidate
+
+            else:
+                for k in range(len(str(candidate))-1):
+                    if int(str(candidate)[k]) <= int(str(candidate)[k+1]):
+                        continue
+                        
+                    else:
+                        is_danjo = False
+                        break
+                
+                if is_danjo:
+                    if candidate > result:
+                        result = candidate
+                        count += 1
+
+    if count == 0:
+        result = -1           
+
+    print(f'#{test_case} {result}')
+
+
+
+
 
 
 # T = int(input())
