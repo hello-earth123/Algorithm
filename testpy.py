@@ -44,3 +44,14 @@ for test_case in range(1, T+1):
                 count += 1
 
     print(f'#{test_case} {count}')
+    
+
+T = int(input())
+
+def my_sum(n1, n2):
+    return n1 + n2
+
+for test_case in range(1, T+1):
+    A, B = map(int, input().split())
+    print(f'Case #{test_case}: {my_sum(A, B)}')
+    
