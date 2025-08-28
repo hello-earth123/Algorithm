@@ -1,13 +1,29 @@
-N = int(input())
+'''
+L -> V -> R
+preorder
 
-dp = [0] * (N+1)
+V -> L -> R
+inorder
 
-dp[1] = 1
+L -> R -> V
+postorder
+'''
 
-if N >= 2:
-    dp[2] = 3
-    
-for i in range(3, N+1):
-    dp[i] = dp[i-1] + 2 * dp[i-2]
-    
-print(dp[N] % 10007)
+def inorder(root):
+    global idx
+    lft = root * 2
+    rgt = root * 2 + 1
+    if lft <= N:
+        inorder(lft)
+    idx += 1
+    tree[root] = idx
+    if rgt <= N:
+        inorder(rgt)
+
+T = int(input())
+for test_case in range(1, T+1):
+    tree = [0] * 1001
+    idx = 0
+    N = int(input())
+    inorder(1)
+    print(f'#{test_case} {tree[1]} {tree[N // 2]}')
