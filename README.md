@@ -1,1 +1,1 @@
-# algo-homework
+# algorithm
