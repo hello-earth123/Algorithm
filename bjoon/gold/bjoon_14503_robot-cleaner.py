@@ -7,9 +7,8 @@
 # 청소
 # d = 0, 1, 2, 3 / 북, 동, 남, 서
 # 0은 청소 안한 칸, 1은 벽
-from collections import deque
-N, M = int(input())
-start_r, start_c, start_d = map(int, input().split())
+N, M = map(int, input().split())
+start_r, start_c, d = map(int, input().split())
 # direction[start_d] 이게 첫 방향
 
 floor = []
@@ -20,31 +19,34 @@ for _ in range(N):
 visited = [[False] * M for _ in range(N)]
 count = 0
 while True:
-    # 종료 조건
-    # 후진할 수 없다면 (뒤에 벽이 있다면)종료
-    
     # delta (북 동 남 서)
     dr = [-1, 0, 1, 0]
     dc = [0, 1, 0, -1]
 
-    
-    nr = start_r + dr[start_d % 4]
-    nc = start_c + dc[start_d % 4]
-
-    # 만약 청소할 곳이 있다면
-    if floor[nr][nc] == 0 and not visited[nr][nc]:
-        # 90도 반시계 회전
-        start_d -= 1
-        nr = start_r + dr[start_d % 4]
-        nc = start_c + dc[start_d % 4]
-    
-        # 그 곳으로 이동해서 청소
-        visited[nr][nc] = True
+    # 청소 진행
+    if not visited[start_r][start_c]:
+        visited[start_r][start_c] = True
         count += 1
-        # 1번으로 복귀
-        start_r, start_c = nr, nc
+
+    for _ in range(4):
+        d = (d + 3) % 4
+        nr = start_r + dr[d]
+        nc = start_c + dc[d]
+        # 만약 청소할 곳이 있다면
+        if 0 <= nr < N and 0 <= nc < M:
+                if floor[nr][nc] == 0 and not visited[nr][nc]:
+                # 1번으로 복귀
+                    start_r, start_c = nr, nc
+                    break
+       
+    # 4방향에 청소할 곳이 없으면
     else:
-        # 후진 가능하면 후진
-        
+        # 후진 가능하면 후진 -> 후진이 가능하다? 벽이 없거나 영역 안에 있는 경우
+        nr = start_r - dr[d]
+        nc = start_c - dc[d]
+        if 0 <= nr < N and 0 <= nc < M and floor[nr][nc] != 1:
+            start_r, start_c = nr, nc
         # 안되면 종료
-        pass
+        else:
+            break
+print(count)
