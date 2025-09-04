@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "IuyZsiRodFZ0JB6F7N/srPj1PgWCFbeAkmLDwqU8k81GrEX6gTPoePan5R7lo8kkw30ClEP8uLjDounb5+2LKA==",
+  "dgSpecHash": "TDl7u42prTQ=",
   "success": true,
-  "projectFilePath": "/Users/yangjunseo/Desktop/Algo/C#Algo/C#Algo.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\SSAFY\\Desktop\\Algorithm\\C#Algo\\C#Algo.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\SSAFY\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.36\\microsoft.netcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\SSAFY\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.36\\microsoft.windowsdesktop.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\SSAFY\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.36\\microsoft.aspnetcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\SSAFY\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.36\\microsoft.netcore.app.host.win-x64.6.0.36.nupkg.sha512"
+  ],
   "logs": []
 }
