@@ -1,22 +1,18 @@
-T = int(input())
-for test_case in range(1, T+1):
-    N = int(input())
-    heap = []   
+def draw_star(n):
+    if n == 1:
+        return ['*']
+    
+    stars = draw_star(n // 3)
     result = []
-    for _ in range(N):
-        data = list(map(int, input().split()))
-        if data[0] == 1:
-            heap.append(data[1])
-        
-        else:
-            if heap:
-                result.append(max(heap))
-                heap.remove(max(heap))
-            else:
-                result.append(-1)
-                
+    
+    for s in stars:
+        result.append(s * 3)
+    for s in stars:
+        result.append(s + " " * (n // 3) + s)
+    for s in stars:
+        result.append(s * 3)
+    
+    return result
 
-    print(f'#{test_case}', end = ' ')
-    for i in range(len(result)):
-        print(result[i], end = ' ')
-    print()
+N = int(input())
+print("\n".join(draw_star(N)))

@@ -1,10 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System;
-
-class Program
+﻿class Program
 {
     static void Main()
     {
-        Console.WriteLine("Hello World!");
+for (int row = 1; row < 11; row++)
+{
+    for (char column = 'a'; column < 'k'; column++)
+    {
+        Console.WriteLine($"The cell is ({row}, {column})");
+    }
+}
     }
 }
