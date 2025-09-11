@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("C#Algo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f391f2cf714ec7ca945d2c2b49ae16cef7cfd7e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+13571420ec0cd66d1ddc928181ac408481384854")]
 [assembly: System.Reflection.AssemblyProductAttribute("C#Algo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("C#Algo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

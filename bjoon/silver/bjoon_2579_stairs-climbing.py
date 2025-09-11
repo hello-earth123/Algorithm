@@ -16,70 +16,24 @@
 
 # f(n) = (f(n-2) + p(n)) or (f(n-3) + p(n-1) + p(n))
 
+N = int(input())
+stairs = [0] + [int(input()) for _ in range(N)]  # 1-indexed
 
+dp = [0] * (N + 1)
 
+if N == 1:
+    print(stairs[1])
+elif N == 2:
+    print(stairs[1] + stairs[2])
+else:
+    dp[1] = stairs[1]
+    dp[2] = stairs[1] + stairs[2]
+    dp[3] = max(stairs[1] + stairs[3], stairs[2] + stairs[3])
 
+    for i in range(4, N + 1):
+        dp[i] = max(dp[i-2] + stairs[i],
+                    dp[i-3] + stairs[i-1] + stairs[i])
 
-# 계단 연속 세 개는 안됨
-# 계단은 i+1 혹은 i+2로 뛸 수 있음
-# 마지막 계단은 반드시 밟아야함
+    print(dp[N])
 
-stair_number = int(input())
-stairs = []
-
-# 제일 마지막 부분에서 시작하여 거꾸로 가기(마지막은 무조건 가야하므로 도착 지점이 정해져 있음)
-# 시작 지점은 점수가 0인 계단으로 만든다.
-
-
-#계단 만들기
-stairs += [0] # 시작 지점
-for _ in range(stair_number):
-    N = int(input())
-    stairs.append(N)
-
-# 시작 지점
-i = len(stairs) - 1   # 6
-count = 1
-score = stairs[i] # 20
-
-# 계단
-while True:
-    # 종료 조건
-    if i == 1:
-        break
-    
-
-    # 반복 조건
-    # 계단 이동
-    # 두 칸을 연속으로 갔다면 점프
-    if count == 2:
-        score += stairs[i-2]
-        i -= 2
-        count = 1
-        
-        
-    # -1, -2 중 더 큰 계단 선택
-    elif (stairs[i-1] > stairs[i-2]) and count < 2:
-        score += stairs[i-1]
-        i -= 1
-        count += 1
-        
-
-    elif (stairs[i-1] <= stairs[i-2]) and count < 2:
-        score += stairs[i-2]
-        i -= 2
-        count = 1
-
-    # # 만약 둘이 같다면? 
-    # elif (stairs[i-1] == stairs[i-2]) and count < 2:
-        
-    #     pass
-
-print(score)
-
-
-
-# 파리퇴치, 파리퇴치3 풀고 외우기
-# 버블, 카운팅, 선택 정렬 암기
-# min, max, sort등 내장함수 사용 x
-# 알고리즘 시험환경 세팅하기
+# 조건은 세 번을 연속으로 밟으면 안되고 마지막 계단은 반드시 밟아야한다.
