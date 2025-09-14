@@ -1,20 +1,12 @@
-def recur(path, idx):
-    global cnt
-    if idx == N:
-        return cnt
-    
-    if len(path) == 0 or path[-1] < numbers[idx]:
-        cnt += 1
-        recur(path + [numbers[idx]], idx + 1)
-    elif path[-1] >= numbers[idx]:
-        recur(path, idx + 1)
-
 N = int(input())
 numbers = list(map(int, input().split()))
 
-result = float('-inf')
+# dp의 상태: 인덱스 번호, dp의 값: numbers[i]로 끝나는 제일 긴 길이
+dp = [1] * N
 
 for i in range(N):
-    cnt = 0
-    result = max(result, recur([], i))
-print(result)
+    for j in range(i):
+        if numbers[j] < numbers[i]:
+            dp[i] = max(dp[i], dp[j] + 1)
+            
+print(max(dp))
