@@ -8,25 +8,24 @@
     "net6.0": []
   },
   "packageFolders": {
-    "/Users/yangjunseo/.nuget/packages/": {}
+    "C:\\Users\\SSAFY\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/yangjunseo/Desktop/Algo/C#Algo/C#Algo.csproj",
+      "projectUniqueName": "C:\\Users\\SSAFY\\Desktop\\Algorithm\\C#Algo\\C#Algo.csproj",
       "projectName": "C#Algo",
-      "projectPath": "/Users/yangjunseo/Desktop/Algo/C#Algo/C#Algo.csproj",
-      "packagesPath": "/Users/yangjunseo/.nuget/packages/",
-      "outputPath": "/Users/yangjunseo/Desktop/Algo/C#Algo/obj/",
+      "projectPath": "C:\\Users\\SSAFY\\Desktop\\Algorithm\\C#Algo\\C#Algo.csproj",
+      "packagesPath": "C:\\Users\\SSAFY\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\SSAFY\\Desktop\\Algorithm\\C#Algo\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/yangjunseo/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\SSAFY\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -39,7 +38,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net6.0": {
@@ -55,12 +60,30 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[6.0.36, 6.0.36]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[6.0.36, 6.0.36]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[6.0.36, 6.0.36]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[6.0.36, 6.0.36]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304\\RuntimeIdentifierGraph.json"
       }
     }
   }
