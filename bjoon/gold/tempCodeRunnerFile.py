@@ -1,2 +1,2 @@
-k = True
-            brea
+
+for i in range(1, N + 1):
