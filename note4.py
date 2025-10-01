@@ -1,26 +1,20 @@
-from collections import deque
-
-def bfs(n):
-    # 여기서 dist 리스트는 최초 방문 여부와 최단 거리(최소 시간)를 기록하고 보장한다.
-    dist = [-1] * 100001
-    dist[n] = 0
-    queue = deque([n])
+T = int(input())
+for test_case in range(1, T + 1):
+    N, M = map(int, input().split())
+    # 영역 생성
+    area = []
+    for _ in range(N):
+        row = list(map(int, input().split()))
+        area.append(row)
     
-    while queue:
-        x = queue.popleft()
-        
-        if x == K:
-            return dist[x]
-        
-        for next_visit in (x * 2, x - 1, x + 1):
-            if 0 <= next_visit <= 100000:
-                if dist[next_visit] == -1:  # 아직 방문 안 한 경우
-                    if next_visit == x * 2:  # 순간이동 (비용 0)
-                        dist[next_visit] = dist[x]
-                        queue.appendleft(next_visit)
-                    else:  # 걷기 (비용 1)
-                        dist[next_visit] = dist[x] + 1
-                        queue.append(next_visit)
-
-N, K = map(int, input().split())
-print(bfs(N))
+    # 파리채 이동
+    result = float('-inf')
+    for i in range(N - M + 1):
+        for j in range(N - M + 1):
+            total = 0
+            for r in range(M):
+                for c in range(M):
+                    total += area[i + r][j + c]
+            result = max(result, total)
+            
+    print(f'#{test_case} {result}')
