@@ -1,34 +1,27 @@
 from collections import deque
-def bfs():
-    global count
-    queue = deque([start])
-    visited[start] = True
+def bfs(s):
+    queue = deque([(s, bridge[s], count)])
+    visited[s] = True
     
+    count = 0
     while queue:
-        location = queue.popleft()
+        location, jump, c = queue.popleft()
         for i in range(1, 10001):
-            next_location = bridge[location] * i
-            if 0 <= next_location < N and not visited[next_location]:
+            next_location = location + jump * i 
+            if 1 <= next_location <= N and not visited[next_location]:
                 visited[next_location] = True
-                queue.append(next_location)
-            count += 1
-                
-# 징검다리 길이
+                c += 1
+                queue.append((next_location, bridge[next_location], c))
+    return count
+
 N = int(input())
-
-# 다리에 써져 있는 숫자
+# padding 1칸
 bridge = [0] + list(map(int, input().split()))
-
-# 방문 처리 배열
-visited = [False] * (N + 1)
-count = 0
-
-# 시작점, 종료 지점
 start, end = map(int, input().split())
 
-bfs()
-if visited[end] == False:
-    print(-1)
+visited = [False] * (N + 1)
+
+if visited[end] == True:
+    print(bfs(start))
 else:
-    print(count)
-    
+    print(-1)
